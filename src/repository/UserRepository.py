@@ -12,7 +12,7 @@ class UserRepository:
         self.__user_collection = self.__database.user_collection
 
     def get_users(self):
-        self.__logger.info("Getting users from database")
+        self.__logger.info("Getting users from configuration")
 
         users = list()
 

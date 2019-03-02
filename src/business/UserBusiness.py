@@ -1,7 +1,7 @@
 from src.repository.UserRepository import UserRepository
 
 
-class UserBussiness:
+class UserBusiness:
 
     def __init__(self):
         self.__user_repository = UserRepository()
