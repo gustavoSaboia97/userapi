@@ -13,8 +13,8 @@ class TestUserLogin(unittest.TestCase):
 
     def test_should_return_dict(self):
         data = self.__user.to_dict()
-        self.assertEqual(data["id"], "user_id", "Wrong User Login Dict Return")
-        self.assertEqual(data["name"], "user_name", "Wrong User Login Dict Return")
+        self.assertEqual("user_id", data["id"], "Wrong User Login Dict Return")
+        self.assertEqual("user_name", data["name"], "Wrong User Login Dict Return")
 
 
 if __name__ == "__main__":

@@ -9,7 +9,7 @@ class TestHealth(unittest.TestCase):
         self.__health = Health()
 
     def test_should_return_health_json(self):
-        self.assertEqual(str(self.__health), "{\"project\": \"User Management\", \"status\": \"UP\"}")
+        self.assertEqual("{\"project\": \"User Management\", \"status\": \"UP\"}", str(self.__health))
 
 
 if __name__ == "__main__":
