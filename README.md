@@ -59,3 +59,13 @@ RESPONSE:
         }
     ]    
 ```
+
+* `/api/user/USER_ID` -> Get information about getting it by the user id
+
+RESPONSE:
+```
+    {
+        "id": "user_id_1",
+        "name": "user_name_1"
+    }   
+```
