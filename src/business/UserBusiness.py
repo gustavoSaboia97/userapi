@@ -13,7 +13,7 @@ class UserBusiness:
 
     def add_new_user(self, user: UserLogin):
         self.__logger.info(f"Validating the insertion of new user: {user.login}")
-        existent_user = self.__user_repository.get_user(user.login)
+        existent_user = self.__user_repository.get_user_by_login(user.login)
 
         if existent_user is not None:
             raise UserAlreadyExistsException()

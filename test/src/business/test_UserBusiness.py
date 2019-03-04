@@ -3,6 +3,7 @@ import unittest
 from unittest.mock import patch
 
 from src.business.UserBusiness import UserBusiness
+from src.exceptions.exceptions import UserAlreadyExistsException
 from src.models.models import UserLogin
 
 
@@ -13,15 +14,22 @@ class TestUserBusiness(unittest.TestCase):
         self.__user_repository_instance = user_repository_mock.return_value
         self.__user_business = UserBusiness()
 
+    def test_should_raise_that_user_exists(self):
+        user = UserLogin(None, "name", "login", "password")
+        new_user = UserLogin("user_id", "name", "login", "password")
+        self.__user_repository_instance.get_user_by_login.return_value = new_user
+
+        self.assertRaises(UserAlreadyExistsException, self.__user_business.add_new_user, user)
+
     def test_should_add_new_user(self):
         user = UserLogin(None, "name", "login", "password")
         new_user = UserLogin("user_id", "name", "login", "password")
-        self.__user_repository_instance.get_user.return_value = None
+        self.__user_repository_instance.get_user_by_login.return_value = None
         self.__user_repository_instance.add_new_user.return_value = new_user
 
         response = self.__user_business.add_new_user(user)
 
-        self.assertTrue(self.__user_repository_instance.get_user.called)
+        self.assertTrue(self.__user_repository_instance.get_user_by_login.called)
         self.assertTrue(self.__user_repository_instance.add_new_user.called)
         self.assertEqual(new_user, response)
 
