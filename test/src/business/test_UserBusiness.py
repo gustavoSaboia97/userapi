@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import patch
 
 from src.business.UserBusiness import UserBusiness
-from src.exceptions.exceptions import UserAlreadyExistsException
+from src.exceptions.exceptions import UserAlreadyExistsException, UserNotFoundException
 from src.models.models import UserLogin
 
 
@@ -36,7 +36,25 @@ class TestUserBusiness(unittest.TestCase):
     def test_should_get_all_users(self):
         self.__user_repository_instance.get_users.return_value = []
 
-        users = self.__user_business.get_users()
+        response = self.__user_business.get_users()
 
         self.assertTrue(self.__user_repository_instance.get_users.called)
-        self.assertEqual([], users)
+        self.assertEqual([], response)
+
+    def test_should_get_user_by_id(self):
+        user = UserLogin("user_id", "name", "login", "password")
+        self.__user_repository_instance.get_user_by_id.return_value = user
+
+        response = self.__user_business.get_user_by_id("user_id")
+
+        self.assertTrue(self.__user_repository_instance.get_user_by_id.called)
+        self.assertEqual(user, response)
+
+    def test_should_raise_user_not_found(self):
+        self.__user_repository_instance.get_user_by_id.return_value = None
+
+        self.assertRaises(UserNotFoundException, self.__user_business.get_user_by_id, "user_id")
+
+
+if __name__ == "__main__":
+    unittest.main()

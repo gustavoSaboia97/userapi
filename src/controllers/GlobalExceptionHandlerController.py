@@ -15,7 +15,7 @@ class GlobalExceptionHandlerController:
 
         return Response(error_json, status=error.status_code)
 
-    def unknow_errors(self, error: Exception):
+    def unknown_errors(self, error: Exception):
         self.__logger.error(f"Unknown exception: {str(error)}")
 
         return Response(str(error), status=500)

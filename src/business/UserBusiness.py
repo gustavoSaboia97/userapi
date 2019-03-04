@@ -2,7 +2,7 @@ from src.models.models import UserLogin
 from src.repository.UserRepository import UserRepository
 from src.util.Logger import Logger
 
-from src.exceptions.exceptions import UserAlreadyExistsException
+from src.exceptions.exceptions import UserAlreadyExistsException, UserNotFoundException
 
 
 class UserBusiness:
@@ -25,3 +25,11 @@ class UserBusiness:
     def get_users(self):
         users = self.__user_repository.get_users()
         return users
+
+    def get_user_by_id(self, user_id: str):
+        user = self.__user_repository.get_user_by_id(user_id)
+
+        if user is None:
+            raise UserNotFoundException
+
+        return user

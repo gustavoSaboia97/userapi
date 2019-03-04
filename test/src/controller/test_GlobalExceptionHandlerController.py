@@ -15,5 +15,5 @@ class TestGlobalExceptionHandlerController(unittest.TestCase):
         self.assertEqual(404, response.status_code, "Wrong status code, expected 404")
 
     def test_should_return_status_500_unknow_error(self):
-        response = self.__exeption_handler.unknow_errors(Exception())
+        response = self.__exeption_handler.unknown_errors(Exception())
         self.assertEqual(500, response.status_code, "Wrong status code, expected 500")

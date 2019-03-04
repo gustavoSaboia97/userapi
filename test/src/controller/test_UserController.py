@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import patch
 
 from src.controllers.UserController import UserController
-from src.models.models import UserLogin
+from src.models.models import UserLogin, User
 
 
 class TestUserController(unittest.TestCase):
@@ -27,6 +27,12 @@ class TestUserController(unittest.TestCase):
         self.__user_business_instance.get_users.return_value = []
         self.__user_controller.get_users()
         self.assertTrue(self.__user_business_instance.get_users.called)
+
+    def test_should_get_user_by_id(self):
+        user = User("user_id", "name")
+        self.__user_business_instance.get_user_by_id.return_value = user
+        self.__user_controller.get_user_by_id("user_id")
+        self.assertTrue(self.__user_business_instance.get_user_by_id.called)
 
 
 if __name__ == "__main__":

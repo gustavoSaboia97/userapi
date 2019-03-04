@@ -1,3 +1,4 @@
 from .exception.UserApiException import UserApiException
 from .exception.UserAlreadyExistsException import UserAlreadyExistsException
+from .exception.UserNotFoundException import UserNotFoundException
 

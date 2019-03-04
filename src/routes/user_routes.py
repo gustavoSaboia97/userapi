@@ -23,7 +23,7 @@ def get_users():
 
 @user_blueprint.route("/api/user/<string:user_id>/",  methods=['GET', ])
 def get_user(user_id):
-    return "Returns Specific User data" + user_id
+    return user_controller.get_user_by_id(user_id)
 
 
 @user_blueprint.route("/api/user/login/", methods=['POST', ])
@@ -42,5 +42,5 @@ def user_api_error_handler(error):
 
 
 @user_blueprint.errorhandler(Exception)
-def unknow_error_handler(error):
-    return exception_handler.unknow_errors(error)
+def unknown_error_handler(error):
+    return exception_handler.unknown_errors(error)

@@ -24,4 +24,11 @@ class UserController:
     def get_users(self):
         self.__logger.info("GET all users from configuration")
         users = self.__user_bussiness.get_users()
-        return dumps(users, cls=JsonObjectEncoder)
+        users_json = dumps(users, cls=JsonObjectEncoder)
+        return Response(users_json, status=200)
+
+    def get_user_by_id(self, user_id):
+        self.__logger.info(f"GET user data from id: {user_id}")
+        user = self.__user_bussiness.get_user_by_id(user_id)
+        user_json = dumps(user, cls=JsonObjectEncoder)
+        return Response(user_json, status=200)
