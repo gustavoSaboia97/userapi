@@ -27,6 +27,6 @@ class TestUserRepository(unittest.TestCase):
         self.assertTrue(self.__mongo_configuration_instance.database.user_collection.find.called)
 
     def test_should_get_user_by_id(self):
-        self.__user_repository.get_user_by_id("id")
+        self.__user_repository.get_user_by_id("5c7c0c22fd8a2f36f6cdea65")
 
         self.assertTrue(self.__mongo_configuration_instance.database.user_collection.find.called)

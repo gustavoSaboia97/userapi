@@ -1,6 +1,7 @@
 from src.configuration.MongoConfiguration import MongoConfiguration
 from src.models.models import UserLogin, User
 from src.util.Logger import Logger
+from pymongo.collection import ObjectId
 
 
 class UserRepository:
@@ -37,7 +38,7 @@ class UserRepository:
 
         user = None
 
-        for document in self.__user_collection.find({"login":login}):
+        for document in self.__user_collection.find({"login": login}):
             user_id = str(document["_id"])
             user_name = str(document["name"])
             user_login = str(document["login"])
@@ -46,12 +47,12 @@ class UserRepository:
 
         return user
 
-    def get_user_by_id(self, id: str):
-        self.__logger.info(f"Getting user by login: {id}")
+    def get_user_by_id(self, user_id: str):
+        self.__logger.info(f"Getting user by id: {user_id}")
 
         user = None
 
-        for document in self.__user_collection.find({"_id":id}):
+        for document in self.__user_collection.find({"_id": ObjectId(user_id)}):
             user_id = str(document["_id"])
             user_name = str(document["name"])
             user_login = str(document["login"])

@@ -15,4 +15,4 @@ class MongoConfiguration:
         return self.__database
 
     def close(self):
-        self.__mongo_client.close();
+        self.__mongo_client.close()
