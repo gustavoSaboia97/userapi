@@ -2,7 +2,8 @@ from src.models.models import UserLogin
 from src.repository.UserRepository import UserRepository
 from src.util.Logger import Logger
 
-from src.exceptions.exceptions import UserAlreadyExistsException, UserNotFoundException, LoginException
+from src.exceptions.exceptions import UserAlreadyExistsException, \
+    UserNotFoundException, AuthenticationException, AccessTokenException
 
 from .AccessTokenBusiness import AccessTokenBusiness
 
@@ -45,15 +46,25 @@ class UserBusiness:
 
         return user
 
-    def login(self, user: UserLogin):
-        self.__logger.info(f"Login process for user: {user.user_id}")
+    def authenticate(self, user: UserLogin):
+        self.__logger.info(f"Login process for user - Authentication: {user.user_id}")
 
+        user_login_information = self.__user_repository.get_user_by_id(user.user_id)
+
+        if self.__validate_credentials(user, user_login_information):
+            raise AuthenticationException()
+
+    def get_access_token(self, user: UserLogin):
+        self.__logger.info(f"Login process for user - Access Token: {user.user_id}")
         access_token = self.__access_token_business.create_access_token(user)
         user.access_token = access_token
 
         created = self.__user_repository.set_access_token(user, access_token)
 
         if not created:
-            raise LoginException()
+            raise AccessTokenException()
 
         return user
+
+    def __validate_credentials(self, user: UserLogin, user_login_information: UserLogin):
+        return (user.password != user_login_information.password) or (user.login is not user_login_information.login)

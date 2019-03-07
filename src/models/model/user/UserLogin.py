@@ -21,6 +21,10 @@ class UserLogin(User):
     def access_token(self):
         return self.__access_token
 
+    @password.setter
+    def password(self, password: int):
+        self.__password = password
+
     @access_token.setter
     def access_token(self, access_token):
         self.__access_token = access_token
@@ -38,4 +42,12 @@ class UserLogin(User):
             "id": self.user_id,
             "name": self.name,
             "login": self.login
+        }
+
+    def access_token_to_dict(self):
+        return {
+            "id": self.user_id,
+            "name": self.name,
+            "login": self.login,
+            "access_token": self.access_token
         }

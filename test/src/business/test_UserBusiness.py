@@ -3,7 +3,8 @@ import unittest
 from unittest.mock import patch
 
 from src.business.UserBusiness import UserBusiness
-from src.exceptions.exceptions import UserAlreadyExistsException, UserNotFoundException, LoginException
+from src.exceptions.exceptions import UserAlreadyExistsException, UserNotFoundException, \
+    AccessTokenException, AuthenticationException
 from src.models.models import UserLogin
 
 
@@ -55,22 +56,40 @@ class TestUserBusiness(unittest.TestCase):
 
         self.assertRaises(UserNotFoundException, self.__user_business.get_user_by_id, "user_id")
 
-    def test_should_create_access_token(self):
+    def test_should_pass_into_authentication(self):
+        user = UserLogin("user_id", "name", "login", "password")
+        user_login_information = UserLogin("user_id", "name", "login", "password")
+
+        self.__user_repository_instance.get_user_by_id.return_value = user_login_information
+
+        self.__user_business.authenticate(user)
+
+        self.assertTrue(self.__user_repository_instance.get_user_by_id.called)
+
+    def test_should_raise_authentication_exception(self):
+        user = UserLogin("user_id", "name", "login", "password")
+        user_login_information = UserLogin("user_id", "name", "login", "password2")
+
+        self.__user_repository_instance.get_user_by_id.return_value = user_login_information
+
+        self.assertRaises(AuthenticationException, self.__user_business.authenticate, user)
+
+    def test_should_get_access_token(self):
         user = UserLogin("user_id", "name", "login", "password")
 
-        self.__user_repository_instance.set_access_token.return_value = True
+        self.__user_repository_instance.set_access_token.return_value = user
 
-        response = self.__user_business.login(user)
+        response = self.__user_business.get_access_token(user)
 
         self.assertTrue(self.__user_repository_instance.set_access_token.called)
-        self.assertEqual(str, type(response.access_token))
+        self.assertEqual(user, response)
 
-    def test_should_raise_login_exception(self):
+    def test_should_raise_access_token_exception(self):
         user = UserLogin("user_id", "name", "login", "password")
 
-        self.__user_repository_instance.set_access_token.return_value = False
+        self.__user_repository_instance.set_access_token.return_value = None
 
-        self.assertRaises(LoginException, self.__user_business.login, user)
+        self.assertRaises(AccessTokenException, self.__user_business.get_access_token, user)
 
 
 if __name__ == "__main__":

@@ -28,7 +28,8 @@ def get_user(user_id):
 
 @user_blueprint.route("/api/user/login/", methods=['POST', ])
 def user_login():
-    return "User Login returns Access Token"
+    login_json = request.json
+    return user_controller.login(login_json)
 
 
 @user_blueprint.route("/api/user/access/", methods=['GET', ])

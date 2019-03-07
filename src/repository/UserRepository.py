@@ -42,8 +42,10 @@ class UserRepository:
             user_id = str(document["_id"])
             user_name = str(document["name"])
             user_login = str(document["login"])
+            user_password = str(document["password"])
 
             user = UserLogin(user_id, user_name, user_login, None)
+            user.password = user_password
 
         return user
 
@@ -56,8 +58,10 @@ class UserRepository:
             user_id = str(document["_id"])
             user_name = str(document["name"])
             user_login = str(document["login"])
+            user_password = str(document["password"])
 
             user = UserLogin(user_id, user_name, user_login, None)
+            user.password = user_password
 
         return user
 
@@ -70,4 +74,3 @@ class UserRepository:
         updated_data = self.__user_collection.update_one(update_user, update_data)
 
         return updated_data.raw_result['updatedExisting']
-
