@@ -60,3 +60,14 @@ class UserRepository:
             user = UserLogin(user_id, user_name, user_login, None)
 
         return user
+
+    def set_access_token(self, user: UserLogin, access_token: str):
+        self.__logger.info(f"Setting new access token for user: {user.user_id}")
+
+        update_user = {"_id": ObjectId(user.user_id)}
+        update_data = {"$set": {"access_token": access_token}}
+
+        updated_data = self.__user_collection.update_one(update_user, update_data)
+
+        return updated_data.raw_result['updatedExisting']
+

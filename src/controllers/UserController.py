@@ -32,3 +32,7 @@ class UserController:
         user = self.__user_bussiness.get_user_by_id(user_id)
         user_json = dumps(user, cls=JsonObjectEncoder)
         return Response(user_json, status=200)
+
+    def login(self, login_json: dict):
+        self.__logger.info(f"Login user: {login_json['login']}")
+
