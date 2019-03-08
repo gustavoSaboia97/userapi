@@ -60,11 +60,11 @@ class TestUserBusiness(unittest.TestCase):
         user = UserLogin("user_id", "name", "login", "password")
         user_login_information = UserLogin("user_id", "name", "login", "password")
 
-        self.__user_repository_instance.get_user_by_id.return_value = user_login_information
+        self.__user_repository_instance.get_user_by_login.return_value = user_login_information
 
         self.__user_business.authenticate(user)
 
-        self.assertTrue(self.__user_repository_instance.get_user_by_id.called)
+        self.assertTrue(self.__user_repository_instance.get_user_by_login.called)
 
     def test_should_raise_authentication_exception(self):
         user = UserLogin("user_id", "name", "login", "password")

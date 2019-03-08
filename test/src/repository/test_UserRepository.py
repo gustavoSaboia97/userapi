@@ -33,7 +33,8 @@ class TestUserRepository(unittest.TestCase):
 
     def test_should_update_access_token(self):
         user = UserLogin("5c7c0c22fd8a2f36f6cdea65", "name", "login", "password")
+        user.access_token = "access_token"
 
-        self.__user_repository.set_access_token(user, "access_token")
+        self.__user_repository.set_access_token(user)
 
         self.assertTrue(self.__mongo_configuration_instance.database.user_collection.update_one.called)

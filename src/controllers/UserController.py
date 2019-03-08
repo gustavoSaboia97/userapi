@@ -36,7 +36,7 @@ class UserController:
     def login(self, login_json: dict):
         self.__logger.info(f"Login user: {login_json['login']}")
         user = UserLogin(None, None, login_json["login"], login_json["password"])
-        self.__user_bussiness.authenticate(user)
+        user = self.__user_bussiness.authenticate(user)
         user = self.__user_bussiness.get_access_token(user)
         user_json = dumps(user.access_token_to_dict())
         return Response(user_json, status=200)

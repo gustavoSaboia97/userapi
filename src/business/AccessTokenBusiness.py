@@ -13,7 +13,7 @@ class AccessTokenBusiness:
 
     def create_access_token(self, user: UserLogin):
         self.__logger.info(f"Generating access token for user: {user.user_id}")
-        access_token_hash = hashlib.new('ripemd160')
+        access_token_hash = hashlib.sha256()
         access_token_hash.update(bytes(user.login, "utf-8"))
         access_token_hash.update(bytes(str(user.password), "utf-8"))
         access_token_hash.update(bytes(str(datetime.datetime.now()), "utf-8"))

@@ -47,19 +47,24 @@ class UserBusiness:
         return user
 
     def authenticate(self, user: UserLogin):
-        self.__logger.info(f"Login process for user - Authentication: {user.user_id}")
+        self.__logger.info(f"Login process for user - Authentication: {user.login}")
 
-        user_login_information = self.__user_repository.get_user_by_id(user.user_id)
+        user_login_information = self.__user_repository.get_user_by_login(user.login)
+
+        if user_login_information is None:
+            raise AuthenticationException()
 
         if self.__validate_credentials(user, user_login_information):
             raise AuthenticationException()
+
+        return user_login_information
 
     def get_access_token(self, user: UserLogin):
         self.__logger.info(f"Login process for user - Access Token: {user.user_id}")
         access_token = self.__access_token_business.create_access_token(user)
         user.access_token = access_token
 
-        created = self.__user_repository.set_access_token(user, access_token)
+        created = self.__user_repository.set_access_token(user)
 
         if not created:
             raise AccessTokenException()
@@ -67,4 +72,4 @@ class UserBusiness:
         return user
 
     def __validate_credentials(self, user: UserLogin, user_login_information: UserLogin):
-        return (user.password != user_login_information.password) or (user.login is not user_login_information.login)
+        return (user.password != user_login_information.password) or (user.login != user_login_information.login)
