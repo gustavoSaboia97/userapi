@@ -3,9 +3,11 @@ from src.repository.UserRepository import UserRepository
 from src.util.Logger import Logger
 
 from src.exceptions.exceptions import UserAlreadyExistsException, \
-    UserNotFoundException, AuthenticationException, AccessTokenException
+    UserNotFoundException, AuthenticationException, AccessTokenException, \
+    NonValidAccessTokenException
 
 from .AccessTokenBusiness import AccessTokenBusiness
+from .Validator import Validator
 
 
 class UserBusiness:
@@ -54,7 +56,7 @@ class UserBusiness:
         if user_login_information is None:
             raise AuthenticationException()
 
-        if self.__validate_credentials(user, user_login_information):
+        if Validator.is_wrong_credentials(user, user_login_information):
             raise AuthenticationException()
 
         return user_login_information
@@ -71,5 +73,9 @@ class UserBusiness:
 
         return user
 
-    def __validate_credentials(self, user: UserLogin, user_login_information: UserLogin):
-        return (user.password != user_login_information.password) or (user.login != user_login_information.login)
+    def validate_access_token(self, user: UserLogin):
+        self.__logger.info(f"Validating access token for user: {user.login}")
+        user_login_information = self.__user_repository.get_user_by_login(user.login)
+
+        if Validator.is_wrong_access_token(user, user_login_information):
+            raise NonValidAccessTokenException()

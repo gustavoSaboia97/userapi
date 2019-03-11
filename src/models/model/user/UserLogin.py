@@ -54,3 +54,10 @@ class UserLogin(User):
             "access_token": self.access_token
         }
 
+    def access_token_validate_to_dict(self):
+        return {
+            "login": self.login,
+            "access_token": "OK"
+        }
+
+

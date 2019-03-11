@@ -32,9 +32,10 @@ def user_login():
     return user_controller.login(login_json)
 
 
-@user_blueprint.route("/api/user/access/", methods=['GET', ])
+@user_blueprint.route("/api/user/login/validate/", methods=['POST', ])
 def user_access_token_verification():
-    return "Verify if it is a valid access token"
+    access_token_json = request.json
+    return user_controller.validate_token(access_token_json)
 
 
 @user_blueprint.errorhandler(UserApiException)

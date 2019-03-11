@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from src.business.UserBusiness import UserBusiness
 from src.exceptions.exceptions import UserAlreadyExistsException, UserNotFoundException, \
-    AccessTokenException, AuthenticationException
+    AccessTokenException, AuthenticationException, NonValidAccessTokenException
 from src.models.models import UserLogin
 
 
@@ -90,6 +90,28 @@ class TestUserBusiness(unittest.TestCase):
         self.__user_repository_instance.set_access_token.return_value = None
 
         self.assertRaises(AccessTokenException, self.__user_business.get_access_token, user)
+
+    def test_should_raise_non_valid_access_token_exception(self):
+        user = UserLogin("user_id", "name", "login", "password")
+        user.access_token = "access_token"
+        user_login_information = UserLogin("user_id", "name", "login", "password")
+        user_login_information.access_token = "access_token2"
+
+        self.__user_repository_instance.get_user_by_login.return_value = user_login_information
+
+        self.assertRaises(NonValidAccessTokenException, self.__user_business.validate_access_token, user)
+
+    def test_should_validate_access_token(self):
+        user = UserLogin("user_id", "name", "login", "password")
+        user.access_token = "access_token"
+        user_login_information = UserLogin("user_id", "name", "login", "password")
+        user_login_information.access_token = "access_token"
+
+        self.__user_repository_instance.get_user_by_login.return_value = user_login_information
+
+        self.__user_business.validate_access_token(user)
+
+        self.assertTrue(self.__user_repository_instance.get_user_by_login.called)
 
 
 if __name__ == "__main__":

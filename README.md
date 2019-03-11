@@ -70,7 +70,7 @@ RESPONSE:
     }   
 ```
 
-LOGIN routes:
+LOGIN routes(POST METHOD):
 
 * `/api/user/login/` -> Create an access token that is responsible for user system access.
 
@@ -93,3 +93,24 @@ RESPONSE:
         "access_token": "user_access_token"
     }
 ```
+
+* `/api/user/login/validate/` -> Validate the access token.
+
+Json request pattern:
+
+```
+    {
+        "login": "user_login",
+        "access_token": "user_access_token"
+    }
+```
+
+RESPONSE:
+
+```
+    {
+        "login": "user_login",
+        "access_token": "OK"
+    }
+```
+
