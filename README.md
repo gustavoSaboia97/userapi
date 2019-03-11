@@ -65,7 +65,31 @@ RESPONSE:
 RESPONSE:
 ```
     {
-        "id": "user_id_1",
-        "name": "user_name_1"
+        "id": "user_id",
+        "name": "user_name"
     }   
+```
+
+LOGIN routes:
+
+* `/api/user/login/` -> Create an access token that is responsible for user system access.
+
+Json request pattern:
+
+```
+    {
+        "login": "user_login",
+        "password": "user_password"
+    }
+```
+
+RESPONSE:
+
+``` 
+    {
+        "id": "user_id",
+        "name": "user_name",
+        "login": "user_login",
+        "access_token": "user_access_token"
+    }
 ```
