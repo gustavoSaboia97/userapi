@@ -32,3 +32,20 @@ class UserController:
         user = self.__user_bussiness.get_user_by_id(user_id)
         user_json = dumps(user, cls=JsonObjectEncoder)
         return Response(user_json, status=200)
+
+    def login(self, login_json: dict):
+        self.__logger.info(f"Login user: {login_json['login']}")
+        user = UserLogin(None, None, login_json["login"], login_json["password"])
+        user = self.__user_bussiness.authenticate(user)
+        user = self.__user_bussiness.get_access_token(user)
+        user_json = dumps(user.access_token_to_dict())
+        return Response(user_json, status=200)
+
+    def validate_token(self, access_token_json: dict):
+        self.__logger.info(f"Validating access token user: {access_token_json['login']}")
+        user = UserLogin(None, None, access_token_json["login"], "")
+        user.access_token = access_token_json["access_token"]
+        self.__user_bussiness.get_user_by_login(user.login)
+        self.__user_bussiness.validate_access_token(user)
+        user_json = dumps(user.access_token_validate_to_dict())
+        return Response(user_json, status=200)

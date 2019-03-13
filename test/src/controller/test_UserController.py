@@ -34,6 +34,26 @@ class TestUserController(unittest.TestCase):
         self.__user_controller.get_user_by_id("user_id")
         self.assertTrue(self.__user_business_instance.get_user_by_id.called)
 
+    def test_should_login_an_user(self):
+        login_json = {"login": "login", "password": "password"}
+        user = UserLogin("user_id", "name", "login", "password")
+        self.__user_business_instance.get_access_token.return_value = user
+
+        response = self.__user_controller.login(login_json)
+
+        self.assertTrue(self.__user_business_instance.authenticate.called)
+        self.assertTrue(self.__user_business_instance.get_access_token.called)
+        self.assertEqual(200, response.status_code)
+
+    def test_should_validate_access_token(self):
+        access_token_json = {"login": "login", "access_token": "access_token"}
+
+        response = self.__user_controller.validate_token(access_token_json)
+
+        self.assertTrue(self.__user_business_instance.get_user_by_login.called)
+        self.assertTrue(self.__user_business_instance.validate_access_token.called)
+        self.assertEqual(200, response.status_code)
+
 
 if __name__ == "__main__":
     unittest.main()

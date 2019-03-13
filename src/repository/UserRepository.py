@@ -42,8 +42,12 @@ class UserRepository:
             user_id = str(document["_id"])
             user_name = str(document["name"])
             user_login = str(document["login"])
+            user_password = str(document["password"])
+            user_access_token = str(document["access_token"])
 
-            user = UserLogin(user_id, user_name, user_login, None)
+            user = UserLogin(user_id, user_name, user_login, "")
+            user.password = user_password
+            user.access_token = user_access_token
 
         return user
 
@@ -56,7 +60,21 @@ class UserRepository:
             user_id = str(document["_id"])
             user_name = str(document["name"])
             user_login = str(document["login"])
+            user_password = str(document["password"])
+            user_access_token = str(document["access_token"])
 
-            user = UserLogin(user_id, user_name, user_login, None)
+            user = UserLogin(user_id, user_name, user_login, "")
+            user.password = user_password
+            user.access_token = user_access_token
 
         return user
+
+    def set_access_token(self, user: UserLogin):
+        self.__logger.info(f"Setting new access token for user: {user.user_id}")
+
+        update_user = {"_id": ObjectId(user.user_id)}
+        update_data = {"$set": {"access_token": user.access_token}}
+
+        updated_data = self.__user_collection.update_one(update_user, update_data)
+
+        return updated_data.raw_result['updatedExisting']

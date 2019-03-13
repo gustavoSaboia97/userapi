@@ -10,15 +10,15 @@ class TestAccessTokenBusiness(unittest.TestCase):
 
     def setUp(self):
         self.__user = UserLogin("user_id", "name", "login", "password")
-        self.__access_token_business = AccessTokenBusiness(self.__user)
+        self.__access_token_business = AccessTokenBusiness()
 
     @patch('src.business.AccessTokenBusiness.hashlib')
     def test_should_create_access_token(self, hashlib_mock):
-        hashlib_instance = hashlib_mock.new.return_value
+        hashlib_instance = hashlib_mock.sha256.return_value
 
-        self.__access_token_business.create_access_token()
+        self.__access_token_business.create_access_token(self.__user)
 
-        self.assertTrue(hashlib_mock.new.called)
+        self.assertTrue(hashlib_mock.sha256.called)
         self.assertTrue(hashlib_instance.update.called)
         self.assertTrue(hashlib_instance.hexdigest.called)
 
