@@ -13,13 +13,13 @@ class UserRepository:
         self.__user_collection = self.__database.user_collection
         self.__user_collection.create_index("login", unique=True)
 
-    def add_new_user(self, user: UserLogin):
+    def add_new_user(self, user: UserLogin) -> UserLogin:
         self.__logger.info(f"Inserting new user: {user.login}")
         mongo_object_id = self.__user_collection.insert_one(user.to_mongo_dict()).inserted_id
         user.user_id = str(mongo_object_id)
         return user
 
-    def get_users(self):
+    def get_users(self) -> list:
         self.__logger.info("Getting users from configuration")
 
         users = list()
@@ -33,7 +33,7 @@ class UserRepository:
 
         return users
 
-    def get_user_by_login(self, login: str):
+    def get_user_by_login(self, login: str) -> UserLogin:
         self.__logger.info(f"Getting user by login: {login}")
 
         user = None
@@ -51,7 +51,7 @@ class UserRepository:
 
         return user
 
-    def get_user_by_id(self, user_id: str):
+    def get_user_by_id(self, user_id: str) -> UserLogin:
         self.__logger.info(f"Getting user by id: {user_id}")
 
         user = None
@@ -69,7 +69,7 @@ class UserRepository:
 
         return user
 
-    def set_access_token(self, user: UserLogin):
+    def set_access_token(self, user: UserLogin) -> bool:
         self.__logger.info(f"Setting new access token for user: {user.user_id}")
 
         update_user = {"_id": ObjectId(user.user_id)}
