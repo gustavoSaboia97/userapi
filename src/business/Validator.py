@@ -39,7 +39,7 @@ class Validator:
             raise CannotBeBlankException("access_token")
         if not bool(access_token_json["login"].strip()):
             raise CannotBeBlankException("login")
-        if not bool(access_token_json["password"].strip()):
+        if not bool(access_token_json["access_token"].strip()):
             raise CannotBeBlankException("access_token")
 
     @staticmethod
