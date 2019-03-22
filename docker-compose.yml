@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  flask:
+    build: .
+    container_name: userapi
+    environment:
+      - DATABASE_URI=mongodb://userapi-mongodb:27017/
+    ports:
+      - 8080:8080
+    working_dir: /app
+    depends_on:
+      - mongo
+    networks:
+      - flasknetwork
+    restart: always
+
+  mongo:
+    image: mongo
+    container_name: userapi-mongodb
+    networks:
+      - flasknetwork
+    volumes:
+      - $HOME/data/userapi-mongo-data:/data/db
+      - $HOME/data/userapi-mongo-bkp:/data/bkp
+    restart: always
+
+networks:
+  flasknetwork:
+    driver: bridge
