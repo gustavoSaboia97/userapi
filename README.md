@@ -20,6 +20,10 @@ An environment variable is necessary to set the database to persist information.
 
 `DATABASE_URI=mongodb://localhost:27017/`
 
+# Docker Container
+
+`docker-compose up`
+
 # Use of the API
 
 POST routes:
