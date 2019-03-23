@@ -38,7 +38,7 @@ Json request pattern:
         "password": "user_password"
     }
 ```
-RESPONSE:
+RESPONSE(Status code: 201):
 ```
     {
         "id": "user_id",
@@ -50,7 +50,7 @@ GET routes:
 
 * `/api/user/` -> Get all users from database
 
-RESPONSE:
+RESPONSE(Status code: 200):
 ```
     [
         {
@@ -66,7 +66,7 @@ RESPONSE:
 
 * `/api/user/USER_ID` -> Get information about getting it by the user id
 
-RESPONSE:
+RESPONSE(Status code: 200):
 ```
     {
         "id": "user_id",
@@ -87,7 +87,7 @@ Json request pattern:
     }
 ```
 
-RESPONSE:
+RESPONSE(Status code: 200):
 
 ``` 
     {
@@ -109,7 +109,7 @@ Json request pattern:
     }
 ```
 
-RESPONSE:
+RESPONSE(Status code: 200):
 
 ```
     {
@@ -118,3 +118,10 @@ RESPONSE:
     }
 ```
 
+## Posible errors
+
+* 400 BAD REQUEST, in cases that you forget something at the request, this will probably inform you the field that you forgot.
+* 409 CONFLICT, when an user already exists.
+* 404 NOT FOUND, when an user don`t exists.
+* 401 UNAUTHORIZED, cases that login, or access token is wrong.
+* 500 INTERNAL SERVER ERROR
